@@ -102,7 +102,7 @@ function
 // insert tables
 const insertLocationTable = `INSERT INTO city (search_query, formatted_query, latitude, longitude) VALUES ($1, $2, $3, $4)`;
 // const insertWeatherTable = `INSERT INTO Weather (forcast, time, location_id) VALUES ($1, $2, $3)`;
-// const insertEventTable = `INSERT INTO events (link, event_name, event_date,event_summary) VALUES ($1, $2, $3, $4)`;
+// const insertEventTable = `INSERT INTO events (link, event_name, event_date,event_summary) VALUES ($1, $2, $3, $4)`
 
 
 
