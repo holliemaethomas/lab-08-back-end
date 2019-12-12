@@ -26,23 +26,23 @@ app.get('/weather', getWeather);
 app.get('/events', getEvents);
 
 // CONSTRUCTOR *** I haven't use constructors 
-function Location(coordinates){
+function Location(coordinates) {
   this.formatted_query = coordinates.formatted_address;
   this.latitude = coordinates.geometry.location.lat;
   this.longitude = coordinates.geometry.location.lng;
 }
 
-function Weather(location){
+function Weather(location) {
   this.time = new Date(location.time).toDateString();
   this.forecast = location.summary;
 }
 
 // routes functions handlers
-function getLocation(req, res){
+function getLocation(req, res) {
   // console.log('req.query', req.query) // { data: 'lynnwood' }
   const whatTheUserSearchedFor = req.query.data;
-  superagent.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${whatTheUserSearchedFor}&key=${GEOCODING_API_KEY}`).then(response => { 
-  // console.log('response.body', response.body); // Gives the Object data of the info requested
+  superagent.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${whatTheUserSearchedFor}&key=${GEOCODING_API_KEY}`).then(response => {
+    // console.log('response.body', response.body); // Gives the Object data of the info requested
 
     res.send({
       'search_query': whatTheUserSearchedFor,
@@ -53,16 +53,16 @@ function getLocation(req, res){
   });
 }
 
-function getWeather(req, res){
+function getWeather(req, res) {
   const weatherLatitude = req.query.data.latitude;
   const weatherLongitude = req.query.data.longitude
   // console.log('req.query', req.query); // Gives the info for ex. Lynnwood, description, lat and lng
 
   superagent.get(`https://api.darksky.net/forecast/${DARKSKY_API_KEY}/${weatherLatitude},${weatherLongitude}`).then(response => {
     // console.log('response.body.daily.data', response.body.daily.data) // Gives me the object or array data requested 
-    
-    const allWeather = response.body.daily.data; 
-    
+
+    const allWeather = response.body.daily.data;
+
     let allData = allWeather.map(event => {
       return {
         'time': new Date(event.time * 1000).toDateString(),
@@ -74,7 +74,7 @@ function getWeather(req, res){
   });
 }
 
-function getEvents(req, res){
+function getEvents(req, res) {
   // console.log('req.query.data.formatted_query', req.query.data.formatted_query)
   superagent.get(`http://api.eventful.com/json/events/search?app_key=${EVENTFUL_API_KEY}&keyword=coders&location=${req.query.data.formatted_query}&date=Future`).then(response => {
     console.log(JSON.parse(response.text).events.event[0]);
@@ -95,5 +95,16 @@ function getEvents(req, res){
 
   });
 }
+
+
+
+
+// insert tables
+const insertLocationTable = `INSERT INTO city (search_query, formatted_query, latitude, longitude) VALUES ($1, $2, $3, $4)`;
+// const insertWeatherTable = `INSERT INTO Weather (forcast, time, location_id) VALUES ($1, $2, $3)`;
+// const insertEventTable = `INSERT INTO events (link, event_name, event_date,event_summary) VALUES ($1, $2, $3, $4)`;
+
+
+
 
 app.listen(PORT, () => console.log(`up on port ${PORT}`));
