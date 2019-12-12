@@ -96,7 +96,7 @@ function getEvents(req, res) {
   });
 }
 
-
+function
 
 
 // insert tables
