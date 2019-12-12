@@ -16,7 +16,9 @@ const app = express();
 app.use(cors());
 
 // this is postgres' client takes a paramater of database url put your computer's version of this string into your .env
-const client = new pg.Client('postgres://ncarignan:password@localhost:5432/demodayeight');
+const client = new pg.Client(process.env.DATABASE_URL);
+client.on('error', error => console.error(error));
+client.connect();
 
 // ROUTES
 app.get('/location', getLocation);
