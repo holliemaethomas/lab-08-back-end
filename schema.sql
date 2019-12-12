@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS weather(
 id SERIAL PRIMARY KEY,
 forcast VARCHAR (255),
 time VARCHAR(255),
-created_at BIGINT,
 location_id NOT NULL,
 );
 
