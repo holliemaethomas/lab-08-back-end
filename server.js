@@ -12,11 +12,9 @@ const PORT = process.env.PORT;
 const GEOCODING_API_KEY = process.env.GEOCODING_API_KEY;
 const DARKSKY_API_KEY = process.env.DARKSKY_API_KEY;
 const EVENTFUL_API_KEY = process.env.EVENTFUL_API_KEY;
+const client = new pg.Client(process.env.DATABASE_URL);
 const app = express();
 app.use(cors());
-
-// this is postgres' client takes a paramater of database url put your computer's version of this string into your .env
-const client = new pg.Client('postgres://ncarignan:password@localhost:5432/demodayeight');
 
 // ROUTES
 app.get('/location', getLocation);
@@ -40,7 +38,7 @@ function getLocation(req, res){
   // console.log('req.query', req.query) // { data: 'lynnwood' }
   const whatTheUserSearchedFor = req.query.data;
   superagent.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${whatTheUserSearchedFor}&key=${GEOCODING_API_KEY}`).then(response => { 
-  // console.log('response.body', response.body); // Gives the Object data of the info requested
+  console.log('response.body', response); // Gives the Object data of the info requested
 
     res.send({
       'search_query': whatTheUserSearchedFor,
