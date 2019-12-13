@@ -26,7 +26,7 @@ app.get('/weather', getWeather);
 app.get('/events', getEvents);
 
 // CONSTRUCTOR *** I haven't use constructors 
-function Location(coordinates) {
+function Location(searchQuerry, coordinates) {
   this.formatted_query = coordinates.formatted_address;
   this.latitude = coordinates.geometry.location.lat;
   this.longitude = coordinates.geometry.location.lng;
@@ -35,6 +35,11 @@ function Location(coordinates) {
 function Weather(location) {
   this.time = new Date(location.time).toDateString();
   this.forecast = location.summary;
+}
+
+function getLocation(req, res) {
+  const whatTheUserSearchedFor = req.querry.data; 
+  client.query(`SELECT * FROM city WHERE search_query$1`, [whatTheUserSearchedFor])
 }
 
 // routes functions handlers
